@@ -163,6 +163,9 @@ def extend_user(user):
         r = requests.get('https://api.github.com/users/%s/orgs' % username,
                          headers=headers, auth=TOKEN_AUTH)
 
+        if r.status_code == 404:
+            return None
+
         check_limits(r.headers)
 
         data = json.loads(r.content)
@@ -202,7 +205,8 @@ def extend_user(user):
 
     user.update(acitiviy)
     user.update(profile)
-    user.update(orgs)
+    if orgs is not None:
+        user.update(orgs)
 
     return user
 

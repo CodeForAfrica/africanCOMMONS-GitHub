@@ -10,7 +10,7 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-from secret import CLIENT_ID, CLIENT_SECRET, GITHUB_USERNAME, GITHUB_PASSWORD
+from secret import CLIENT_ID, CLIENT_SECRET, GITHUB_USERNAME, GITHUB_PASSWORD, GITHUB_OTP
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +23,12 @@ payload = {
     "client_secret": CLIENT_SECRET
 }
 
+headers = {"X-GitHub-OTP": GITHUB_OTP}
+
 req = requests.post("https://api.github.com/authorizations",
                     data=json.dumps(payload),
-                    auth=HTTPBasicAuth(GITHUB_USERNAME, GITHUB_PASSWORD))
+                    auth=HTTPBasicAuth(GITHUB_USERNAME, GITHUB_PASSWORD),
+                    headers=headers)
 
 from pprint import pprint as pp ; pp(req.headers)
 
